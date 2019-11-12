@@ -90,7 +90,7 @@ export default new Router({
                     }
                 },
                 {
-                    // vue-schart组件
+                    // Echart组件
                     path: '/charts',
                     component: resolve => require(['../components/page/BaseCharts.vue'], resolve),
                     meta: { 

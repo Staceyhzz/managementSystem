@@ -7,7 +7,8 @@
     <img src="https://img.shields.io/badge/element--ui-2.8.2-brightgreen.svg" alt="element-ui">
   </a>
 
-基于 Vue + Element UI 的后台管理系统解决方案。[线上地址](https://lin-xin.gitee.io/example/work/)
+基于 Vue + Element UI 的后台管理系统解决方案。线上地址：暂无！
+<!-- 基于 Vue + Element UI 的后台管理系统解决方案。[线上地址](https://lin-xin.gitee.io/example/work/) -->
 
 
 ## 项目截图
@@ -34,88 +35,131 @@
 -   [x] Element UI
 -   [x] 登录/注销
 -   [x] Dashboard
--   [x] 表格
--   [x] Tab 选项卡
--   [x] 表单
--   [x] 图表 :bar_chart:
+-   [x] 头部tabs路由切换，超出宽度会自动计算宽度（支持关闭单个/其他/关闭全部）
+-   [x] 表单相关（各种用法）
+-   [x] 图片上传（宽高等验证实现）/裁剪上传
 -   [x] 富文本编辑器
 -   [x] markdown 编辑器
--   [x] 图片拖拽/裁剪上传
--   [x] 支持切换主题色 :sparkles:
+-   [x] 列表相关（各种用法）
+-   [x] 报表打印
+-   [x] 图表Echart（各种用法）
+-   [x] tabs消息中心
 -   [x] 列表拖拽排序
+-   [x] 可拖拽弹窗
+-   [x] 自定义图标
+-   [x] 国际化
 -   [x] 权限测试
 -   [x] 404 / 403
 -   [x] 三级菜单
--   [x] 自定义图标
--   [x] 可拖拽弹窗
--   [x] 国际化
+-   [x] 不同环境打包相关
+-   [x] 支持切换主题色 :sparkles:
 
 ## 安装步骤
 
 ```
-git clone https://github.com/lin-xin/vue-manage-system.git      // 把模板下载到本地
-cd vue-manage-system    // 进入模板目录
-npm install         // 安装项目依赖，等待安装完成之后，安装失败可用 cnpm 或 yarn
+git clone https://github.com/Staceyhzz/managementSystem.git      // 把模板下载到本地
+cd managementSystem    // 进入模板目录
+npm install         // 安装项目依赖，等待安装完成之后，安装失败可用 cnpm
+建议安装使用淘宝镜像  npm install -g cnpm --registry=https://registry.npm.taobao.org
+cnpm install
 
 // 开启服务器，浏览器访问 http://localhost:8080
 npm run serve
 
-// 执行构建命令，生成的dist文件夹放在服务器下即可访问
-npm run build
+// 执行构建命令，生成的dist文件夹放在服务器下即可访问（可以constans.js中配置）
+npm run alpha  // 测试环境
+npm run build  // 生产环境
 ```
 
 ## 组件使用说明与演示
 
-### vue-schart
+### Echart
 
-vue.js 封装 sChart.js 的图表组件。访问地址：[vue-schart](https://github.com/linxin/vue-schart)
+EChart.js 的图表组件。访问地址：[Echart](https://www.echartsjs.com/zh/index.html)
 
-<p><a href="https://www.npmjs.com/package/vue-schart"><img src="https://img.shields.io/npm/dm/vue-schart.svg" alt="Downloads"></a></p>
+<!-- <p><a href="https://www.npmjs.com/package/vue-schart"><img src="https://img.shields.io/npm/dm/vue-schart.svg" alt="Downloads"></a></p> -->
 
 ```html
 <template>
     <div>
-        <schart class="wrapper" canvasId="myCanvas" :options="options"></schart>
+        <div class="schart" id="myCharnt"></div>
     </div>
 </template>
 
 <script>
-    import Schart from 'vue-schart'; // 导入Schart组件
+    import echarts from "echarts"; // 导入Echart组件
     export default {
         data() {
             return {
-                options: {
-                    type: 'bar',
-                    title: {
-                        text: '最近一周各品类销售图'
+                chart: null
+            };
+        },
+        mounted () {
+            this.chartSet();
+            this.accclist();
+        },
+        methods: {
+            // 绘制基础4个图表
+            chartSet() {
+                let self = this;
+                // 柱状图
+                let el = document.getElementById('myCharnt');
+                self.chart = echarts.init(el);
+            },
+            accclist() {
+                this.setEcharts();
+            },
+            // 图标绘制
+            setEcharts() {
+                let option = {
+                    color: ['#3398DB'],
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
                     },
-                    labels: ['周一', '周二', '周三', '周四', '周五'],
-                    datasets: [
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    legend: {
+                        data: ['直接访问']
+                    },
+                    xAxis : [
                         {
-                            label: '家电',
-                            data: [234, 278, 270, 190, 230]
-                        },
+                            type : 'category',
+                            data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                            axisTick: {
+                                alignWithLabel: true
+                            }
+                        }
+                    ],
+                    yAxis : [
                         {
-                            label: '百货',
-                            data: [164, 178, 190, 135, 160]
-                        },
+                            type : 'value'
+                        }
+                    ],
+                    series : [
                         {
-                            label: '食品',
-                            data: [144, 198, 150, 235, 120]
+                            name:'直接访问',
+                            type:'bar',
+                            barWidth: '60%',
+                            data:[10, 52, 200, 334, 390, 330, 220]
                         }
                     ]
                 }
-            };
-        },
-        components: {
-            Schart
+                this.chart.setOption(option, true);
+            }
         }
     };
 </script>
 <style>
-    .wrapper {
-        width: 7rem;
-        height: 5rem;
+    .schart {
+        width: 100%;
+        height: 300px;
     }
 </style>
 ```
@@ -173,5 +217,5 @@ import 'element-ui/lib/theme-default/index.css'; // 默认主题
 
 ## License
 
-[MIT](https://github.com/lin-xin/vue-manage-system/blob/master/LICENSE)
+[MIT](https://github.com/Staceyhzz/managementSystem/issues)
 # managementSystem
