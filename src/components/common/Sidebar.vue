@@ -110,14 +110,19 @@
                         ]
                     },
                     {
+                        icon: 'el-icon-tickets',
+                        index: 'table',
+                        title: '列表相关'
+                    },
+                    {
                         icon: 'el-icon-pie-chart',
                         index: 'charts',
                         title: 'Echart图表'
                     },
                     {
-                        icon: 'el-icon-lx-emoji',
-                        index: 'icon',
-                        title: '自定义图标'
+                        icon: 'el-icon-lx-copy',
+                        index: 'tabs',
+                        title: '消息中心'
                     },
                     {
                         icon: 'el-icon-rank',
@@ -135,14 +140,14 @@
                         ]
                     },
                     {
+                        icon: 'el-icon-lx-emoji',
+                        index: 'icon',
+                        title: '自定义图标'
+                    },
+                    {
                         icon: 'el-icon-lx-global',
                         index: 'i18n',
                         title: '国际化功能'
-                    },
-                    {
-                        icon: 'el-icon-lx-copy',
-                        index: 'tabs',
-                        title: '消息中心'
                     },
                     {
                         icon: 'el-icon-lx-warn',
@@ -158,7 +163,12 @@
                                 title: '404页面'
                             }
                         ]
-                    }
+                    },
+                    {
+                        icon: 'el-icon-setting',
+                        index: 'build',
+                        title: '项目不同环境打包相关'
+                    },
                 ]
             }
         },

@@ -20,6 +20,7 @@ a {
     text-decoration: none
 }
 
+
 .content-box {
     position: absolute;
     left: 220px;
@@ -29,7 +30,7 @@ a {
     padding-bottom: 30px;
     -webkit-transition: left .3s ease-in-out;
     transition: left .3s ease-in-out;
-    background: #F3F3F3;
+    background: #f0f0f0;
 }
 
 .content {
@@ -38,7 +39,6 @@ a {
     padding: 10px;
     overflow-y: scroll;
     box-sizing: border-box;
-    /* background: #fff; */
 }
 
 .content-collapse {
@@ -46,8 +46,7 @@ a {
 }
 
 .container {
-    /* width: 100%; */
-    padding: 15px;
+    padding: 30px;
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -55,6 +54,10 @@ a {
 
 .crumbs {
     margin: 10px 0;
+}
+
+.el-table th {
+    background-color: #f5f7fa !important;
 }
 
 .pagination {

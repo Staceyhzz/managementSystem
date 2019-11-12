@@ -1,6 +1,6 @@
 <template>
     <section class="main">
-        <div class="crumbs">
+        <div style="position: absolute;top:-53px;left:60px;" class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item><i class="el-icon-rank"></i> 拖拽组件</el-breadcrumb-item>
                 <el-breadcrumb-item>拖拽排序</el-breadcrumb-item>

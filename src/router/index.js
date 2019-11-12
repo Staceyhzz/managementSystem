@@ -42,7 +42,7 @@ export default new Router({
                     path: '/table',
                     component: resolve => require(['../components/page/BaseTable.vue'], resolve),
                     meta: { 
-                        title: '基础表格',
+                        title: '列表相关',
                         keepAlive: true
                     } 
                 },
@@ -122,6 +122,15 @@ export default new Router({
                     component: resolve => require(['../components/page/I18n.vue'], resolve),
                     meta: { 
                         title: '国际化',
+                        keepAlive: true
+                    }
+                },
+                {
+                    // 打包相关
+                    path: '/build',
+                    component: resolve => require(['../components/page/build.vue'], resolve),
+                    meta: { 
+                        title: '打包相关',
                         keepAlive: true
                     }
                 },

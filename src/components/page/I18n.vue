@@ -1,6 +1,6 @@
 <template>
     <section class="main">
-        <div class="crumbs">
+        <div style="position: absolute;top:-53px;left:60px;" class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item><i class="el-icon-lx-global"></i> {{$t('i18n.breadcrumb')}}</el-breadcrumb-item>
             </el-breadcrumb>
