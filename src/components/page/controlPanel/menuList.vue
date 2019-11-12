@@ -3,38 +3,12 @@
         <div style="position: absolute;top:-53px;left:60px;" class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>控制面板</el-breadcrumb-item>
-                <el-breadcrumb-item>账号管理</el-breadcrumb-item>
+                <el-breadcrumb-item>菜单管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
-            <el-button style="margin:0 0 14px 0;" type="primary" @click="adduser(null)">+  新增帐号</el-button>
-            <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                <el-form-item prop="region">
-                    <el-select style="width:160px;" v-model="formInline.region" placeholder="请选择角色组">
-                        <el-option label="AD妈妈" value="shanghai"></el-option>
-                        <el-option label="DSP平台" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="group">
-                    <el-select style="width:160px;" v-model="formInline.group" placeholder="请选择用户组">
-                        <el-option label="前端工程师" value="shanghai"></el-option>
-                        <el-option label="测试工程师" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="Resources">
-                    <el-select style="width:160px;" v-model="formInline.Resources" placeholder="请选择资源分配组">
-                        <el-option label="权限一" value="shanghai"></el-option>
-                        <el-option label="权限二" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="user">
-                    <el-input style="width:160px;" v-model="formInline.user" placeholder="请输入登陆账号"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit">查询</el-button>
-                    <el-button @click="resetForm('formInline')">重置</el-button>
-                </el-form-item>
-            </el-form>
+            <el-button style="margin:0 0 14px 0;" type="primary" @click="adduser(null)">+  新增模块</el-button>
+            <!-- table -->
             <el-table
                 v-loading="loading"
                 ref="table"
@@ -42,25 +16,37 @@
                 :data="data1"
                 border
                 style="width: 100%">
-                <el-table-column prop="id" label="账户id" align="center"></el-table-column>
-                <el-table-column prop="userName" label="登录帐号" align="center"></el-table-column>
-                <el-table-column prop="email" label="联系邮箱" align="center"></el-table-column>
-                <el-table-column prop="userGroup" label="角色组" align="center"></el-table-column>
-                <el-table-column prop="department" label="用户组" align="center"></el-table-column>
-                <el-table-column prop="assignName" label="资源分配组" align="center"></el-table-column>
-                <el-table-column prop="loginTime" label="登录时间" align="center"></el-table-column>
-                <el-table-column prop="userDescription" label="描述" align="center"></el-table-column>
-                <el-table-column prop="dingId" label="钉钉id" align="center"></el-table-column>
-                <el-table-column prop="status" label="状态" align="center">
+                <el-table-column prop="id" label="菜单id" min-width="40" align="center"></el-table-column>
+                <el-table-column prop="moduleName" label="模块名称" min-width="100" align="center"></el-table-column>
+                <el-table-column prop="moduleUrl" label="模块链接" min-width="100" align="center"></el-table-column>
+                <el-table-column prop="userGroup" label="模块图标" min-width="100" align="center">
                     <template slot-scope="scope">
-                        <span style="color:rgb(0, 153, 51);" v-if="scope.row.status == 1">开启</span>
-                        <span style="color:#CF1F07;" v-else>封禁</span>
+                        <i class="el-icon-edit"></i>
                     </template>
                 </el-table-column>
-                <el-table-column prop="date" label="操作" align="center">
+                <el-table-column prop="department" label="是否显示" min-width="100" align="center">
                     <template slot-scope="scope">
-                        <el-button style="padding:5px;background:#2d8cf0;color:white;" @click="adduser(scope.row)">编辑</el-button>
-                        <el-button v-if="scope.row.status == 1" style="padding:5px;background:#ed4014;color:white;" @click="sealing(scope.row)">封禁</el-button>
+                        <span v-if="scope.row.online == true">是</span>
+                        <span v-else>否</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="moduleSort" label="排序（列表排序）" min-width="100" align="center"></el-table-column>
+                <el-table-column prop="loginTime" label="子菜单管理" min-width="100" align="center">
+                    <template slot-scope="scope">
+                        <el-button style="padding:5px;background:#3CC4C4;color:white;" @click="subLing(scope.row)">子菜单管理</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="userDescription" label="功能管理" min-width="100" align="center">
+                    <template slot-scope="scope">
+                        <el-button style="padding:5px;background:#3CC4C4;color:white;" @click="sealing(scope.row)">功能管理</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="date" label="操作" min-width="80" align="center">
+                    <template slot-scope="scope">
+                        <div class="elbutton">
+                            <el-button style="padding:5px;background:#2d8cf0;color:white;" @click="adduser(scope.row)">编辑</el-button>
+                            <el-button style="padding:5px;background:#ed4014;color:white;" @click="remove(scope.row)">删除</el-button>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -76,44 +62,33 @@
             </el-pagination>
             <my-modal v-model="modal2" :title="modalType === 'add' ? '新增账号':'编辑账号'">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
-                    <el-form-item label="登录名：" prop="name">
+                    <el-form-item label="模块名称：" prop="name">
                         <el-input v-model="ruleForm.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="姓名：" prop="userName">
+                    <el-form-item label="模块链接：" prop="userName">
                         <el-input v-model="ruleForm.userName"></el-input>
                     </el-form-item>
-                    <el-form-item label="手机号码：" prop="telephone">
-                        <el-input v-model="ruleForm.telephone"></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码：" prop="pass">
-                        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="邮箱：" prop="email">
-                        <el-input v-model="ruleForm.email"></el-input>
-                    </el-form-item>
-                    <el-form-item label="角色组：" prop="region">
-                        <el-select v-model="ruleForm.region" placeholder="请选择角色组">
-                            <el-option label="AD妈妈" value="shanghai"></el-option>
-                            <el-option label="DSP平台" value="beijing"></el-option>
+                    <el-form-item label="图标：">
+                        <el-select v-model="ruleForm.region" placeholder="请选择图标">
+                            <el-option label="区域一" value="shanghai">
+                                <i class="el-icon-delete"></i>
+                            </el-option>
+                            <el-option label="区域二" value="beijing">
+                                <i class="el-icon-share"></i>
+                            </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="用户组：" prop="group">
-                        <el-select v-model="ruleForm.group" placeholder="请选择用户组">
-                            <el-option label="前端工程师" value="shanghai"></el-option>
-                            <el-option label="测试工程师" value="beijing"></el-option>
-                        </el-select>
+                    <el-form-item label="排序：" prop="group">
+                        <el-input-number v-model="num" :min="1" :max="100" label="描述文字"></el-input-number>
                     </el-form-item>
-                    <el-form-item label="资源分配组：" prop="resources">
-                        <el-select v-model="ruleForm.resources" placeholder="请选择资源分配组">
-                            <el-option label="权限一" value="shanghai"></el-option>
-                            <el-option label="权限二" value="beijing"></el-option>
+                    <el-form-item label="是否显示：" prop="resources">
+                        <el-select v-model="ruleForm.resources" placeholder="是否显示？">
+                            <el-option label="区域一" value="shanghai"></el-option>
+                            <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="描述：" prop="desc">
-                        <el-input type="textarea" v-model="ruleForm.desc"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button v-if="bianji" type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                        <el-button v-if="bianji" type="primary" @click="submitForm('ruleForm')">确定</el-button>
                         <el-button v-else type="primary" @click="submitForm('ruleForm')">编辑</el-button>
                         <el-button @click="modal2 = false">取消</el-button>
                     </el-form-item>
@@ -131,12 +106,11 @@ export default {
     },
     data(){
         return {
+            num: null,
             bianji: true,
             formInline: {
-                region: '',
-                group: '',
-                Resources: '',
-                user: ''
+                user: '',
+                region: ''
             },
             ruleForm: {
                 name: '',
@@ -179,7 +153,7 @@ export default {
             modal2: false,
             loading: true,
             modalType: 'add',
-            dataCount: 1, // 初始化信息总条数
+            dataCount: 0, // 初始化信息总条数
             pageNum: 1, // 页数
             pageSize: 10,
             data1: [
@@ -238,11 +212,12 @@ export default {
             }
             this.modal2 = true;
         },
-        onSubmit() {
-            console.log('submit!');
-        },
-        resetForm(formName) {
-            this.$refs[formName].resetFields();
+        remove() {
+            this.$confirm('确认删除？')
+            .then(_ => {
+                
+            })
+            .catch(_ => {});
         },
         // 分页
         handleSizeChange(val) {

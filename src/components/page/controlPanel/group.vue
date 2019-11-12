@@ -9,8 +9,8 @@
         <div class="container">
             <el-button style="margin:0 0 14px 0;" type="primary" @click="adduser(null)">+  新增角色组</el-button>
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                <el-form-item label="审批人">
-                    <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+                <el-form-item>
+                    <el-input v-model="formInline.user" placeholder="请输入权限名"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -48,41 +48,25 @@
             </el-pagination>
             <my-modal v-model="modal2" :title="modalType === 'add' ? '新增角色组':'编辑角色组'">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
-                    <el-form-item label="登录名：" prop="name">
+                    <el-form-item label="角色名称：" prop="name">
                         <el-input v-model="ruleForm.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="姓名：" prop="userName">
-                        <el-input v-model="ruleForm.userName"></el-input>
+                    <el-form-item label="角色组标识：" prop="userName">
+                        <el-input v-model="ruleForm.userName">  </el-input>
                     </el-form-item>
-                    <el-form-item label="手机号码：" prop="telephone">
-                        <el-input v-model="ruleForm.telephone"></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码：" prop="pass">
-                        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="邮箱：" prop="email">
-                        <el-input v-model="ruleForm.email"></el-input>
-                    </el-form-item>
-                    <el-form-item label="角色组：" prop="region">
-                        <el-select v-model="ruleForm.region" placeholder="请选择角色组">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="用户组：" prop="group">
-                        <el-select v-model="ruleForm.group" placeholder="请选择用户组">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="资源分配组：" prop="resources">
-                        <el-select v-model="ruleForm.resources" placeholder="请选择资源分配组">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="描述：" prop="desc">
+                    <el-form-item label="角色描述：" prop="desc">
                         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+                    </el-form-item>
+                    <el-form-item label="权限配置：" prop="desc">
+                        <treeselect
+                            style="width:300px;"
+                            :options="treeData1"
+                            :multiple="true"
+                            v-model="zhi"
+                            :normalizer="normalizer"
+                            :value-consists-of="valueConsistsOf"
+                            :flatten-search-results="true"
+                            placeholder=""/>
                     </el-form-item>
                     <el-form-item>
                         <el-button v-if="bianji" type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -97,12 +81,43 @@
 
 <script>
 import MyModal from '../../modal/myModal.vue';
+// import the component
+import Treeselect from '@riophae/vue-treeselect'
+// import the styles
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
     components:{
-        MyModal
+        MyModal,
+        Treeselect
     },
     data(){
         return {
+            valueConsistsOf: 'ALL_WITH_INDETERMINATE',
+            zhi: null,
+            treeData1: [ 
+                {
+                    id: 'a',
+                    label: 'a',
+                    children: [ 
+                        {
+                        id: 'aa',
+                        label: 'aa',
+                        }, 
+                        {
+                        id: 'ab',
+                        label: 'ab',
+                        } 
+                    ],
+                }, 
+                {
+                    id: 'b',
+                    label: 'b',
+                }, 
+                {
+                    id: 'c',
+                    label: 'c',
+                } 
+            ],
             bianji: true,
             formInline: {
                 user: '',
@@ -111,39 +126,17 @@ export default {
             ruleForm: {
                 name: '',
                 userName: '',
-                telephone: '',
-                pass: '',
-                region: '',
-                group: '',
-                resources: '',
                 desc: '',
-                email: ''   
             },
             rules: {
                 name: [
-                    { required: true, message: '请输入账号名称', trigger: 'blur' },
+                    { required: true, message: '请输入角色名称', trigger: 'blur' },
                 ],
                 userName: [
-                    { required: true, message: '请输入姓名', trigger: 'blur' },
-                ],
-                telephone: [
-                    { required: true, message: '请输入手机号', trigger: 'blur' },
-                ],
-                email: [
-                    { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                    { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-                ],
-                region: [
-                    { required: true, message: '请选择角色组', trigger: 'change' }
-                ],
-                group: [
-                    { required: true, message: '请选择用户组', trigger: 'change' }
-                ],
-                resources: [
-                    { required: true, message: '请选择资源分配组', trigger: 'change' }
+                    { required: true, message: '请输入角色组标识', trigger: 'blur' },
                 ],
                 desc: [
-                    { required: true, message: '请填写活动形式', trigger: 'blur' }
+                    { required: true, message: '请填角色组描述', trigger: 'blur' }
                 ]
             },
             modal2: false,
@@ -194,12 +187,7 @@ export default {
                 this.bianji = false;
                 this.ruleForm.name = data.userName;
                 this.ruleForm.userName = data.userName;
-                this.ruleForm.pass = '132123'
-                this.ruleForm.email = data.email;
-                this.ruleForm.telephone = data.dingId;
-                this.ruleForm.region = 'shanghai';
-                this.ruleForm.group = 'shanghai';
-                this.ruleForm.resources = 'beijing';
+                this.zhi = ['aa','b']
                 this.ruleForm.desc = data.userDescription;
             } else {
                 this.$refs['ruleForm'].resetFields();
@@ -210,6 +198,21 @@ export default {
         },
         onSubmit() {
             console.log('submit!');
+        },
+        sealing () {
+            this.$confirm('确认封禁？')
+            .then(_ => {
+                done();
+            })
+            .catch(_ => {});
+        },
+        normalizer(node) {
+            return {
+                id: node.id,
+                label: node.label,
+                children: node.children,
+                isDefaultExpanded: false
+            }
         },
         // 分页
         handleSizeChange(val) {

@@ -54,16 +54,23 @@
                                 index: 'AccountManagement',
                                 title: '账号管理'
                             },
-                            {
-                                index: 'group',
-                                title: '角色组管理'
-                            }
+                            // {
+                            //     index: 'group',
+                            //     title: '角色组管理'
+                            // },
+                            // {
+                            //     index: 'usergroup',
+                            //     title: '用户组管理'
+                            // },
+                            // {
+                            //     index: 'allocation',
+                            //     title: '资源分配组管理'
+                            // },
+                            // {
+                            //     index: 'menuList',
+                            //     title: '菜单组管理'
+                            // }
                         ]
-                    },
-                    {
-                        icon: 'el-icon-lx-copy',
-                        index: 'tabs',
-                        title: '消息中心'
                     },
                     {
                         icon: 'el-icon-lx-calendar',
@@ -75,34 +82,42 @@
                                 title: '基本表单'
                             },
                             {
-                                index: '3-2',
-                                title: '三级菜单',
-                                subs: [
-                                    {
-                                        index: 'editor',
-                                        title: '富文本编辑器'
-                                    },
-                                    {
-                                        index: 'markdown',
-                                        title: 'markdown编辑器'
-                                    }
-                                ]
+                                index: 'editor',
+                                title: '富文本编辑器'
                             },
                             {
+                                index: 'markdown',
+                                title: 'markdown编辑器'
+                            },
+                            // {
+                            //     index: '3-2',
+                            //     title: '三级菜单',
+                            //     subs: [
+                            //         {
+                            //             index: '1',
+                            //             title: 'XX'
+                            //         },
+                            //         {
+                            //             index: '2',
+                            //             title: 'XX2'
+                            //         }
+                            //     ]
+                            // },
+                            {
                                 index: 'upload',
-                                title: '文件上传'
+                                title: 'upload上传'
                             }
                         ]
+                    },
+                    {
+                        icon: 'el-icon-pie-chart',
+                        index: 'charts',
+                        title: 'Echart图表'
                     },
                     {
                         icon: 'el-icon-lx-emoji',
                         index: 'icon',
                         title: '自定义图标'
-                    },
-                    {
-                        icon: 'el-icon-pie-chart',
-                        index: 'charts',
-                        title: 'schart图表'
                     },
                     {
                         icon: 'el-icon-rank',
@@ -123,6 +138,11 @@
                         icon: 'el-icon-lx-global',
                         index: 'i18n',
                         title: '国际化功能'
+                    },
+                    {
+                        icon: 'el-icon-lx-copy',
+                        index: 'tabs',
+                        title: '消息中心'
                     },
                     {
                         icon: 'el-icon-lx-warn',
@@ -156,7 +176,7 @@
         },
         methods: {
             menu () {
-                const self = this   
+                const self = this       
                 self.$http.get({
                     url: 'user/menu',
                     data: {},

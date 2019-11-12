@@ -16,92 +16,139 @@ export default new Router({
             children: [
                 {
                     path: '/dashboard',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
-                    meta: { title: '系统首页' }
+                    component: resolve => require(['../components/page/Dashboard.vue'], resolve),
+                    meta: { 
+                        title: '系统首页',
+                        keepAlive: true
+                    } 
                 },
                 {
                     path: '/AccountManagement',
-                    component: () => import(/* webpackChunkName: "icon" */ '../components/page/controlPanel/AccountManagement.vue'),
-                    meta: { title: '账号管理' }
+                    component: resolve => require(['../components/page/controlPanel/AccountManagement.vue'], resolve),
+                    meta: { 
+                        title: '账号管理',
+                        keepAlive: true
+                    } 
                 },
                 {
-                    path: '/group',
-                    component: () => import(/* webpackChunkName: "table" */ '../components/page/controlPanel/group.vue'),
-                    meta: { title: '角色组管理' }
+                    path: '/icon',
+                    component: resolve => require(['../components/page/Icon.vue'], resolve),
+                    meta: { 
+                        title: '自定义图标',
+                        keepAlive: true
+                    } 
+                },
+                {
+                    path: '/table',
+                    component: resolve => require(['../components/page/BaseTable.vue'], resolve),
+                    meta: { 
+                        title: '基础表格',
+                        keepAlive: true
+                    } 
                 },
                 {
                     path: '/tabs',
-                    component: () => import(/* webpackChunkName: "tabs" */ '../components/page/Tabs.vue'),
-                    meta: { title: '消息中心' }
+                    component: resolve => require(['../components/page/Tabs.vue'], resolve),
+                    meta: { 
+                        title: '消息中心',
+                        keepAlive: true
+                    } 
                 },
                 {
                     path: '/form',
-                    component: () => import(/* webpackChunkName: "form" */ '../components/page/BaseForm.vue'),
-                    meta: { title: '基本表单' }
+                    component: resolve => require(['../components/page/BaseForm.vue'], resolve),
+                    meta: { 
+                        title: '基本表单',
+                        keepAlive: true
+                    } 
                 },
                 {
                     // 富文本编辑器组件
                     path: '/editor',
-                    component: () => import(/* webpackChunkName: "editor" */ '../components/page/VueEditor.vue'),
-                    meta: { title: '富文本编辑器' }
+                    component: resolve => require(['../components/page/VueEditor.vue'], resolve),
+                    meta: { 
+                        title: '富文本编辑器',
+                        keepAlive: true
+                    }
                 },
                 {
                     // markdown组件
                     path: '/markdown',
-                    component: () => import(/* webpackChunkName: "markdown" */ '../components/page/Markdown.vue'),
-                    meta: { title: 'markdown编辑器' }
+                    component: resolve => require(['../components/page/Markdown.vue'], resolve),
+                    meta: { 
+                        title: 'markdown编辑器',
+                        keepAlive: true
+                    }
                 },
                 {
                     // 图片上传组件
                     path: '/upload',
-                    component: () => import(/* webpackChunkName: "upload" */ '../components/page/Upload.vue'),
-                    meta: { title: '文件上传' }
+                    component: resolve => require(['../components/page/Upload.vue'], resolve),
+                    meta: { 
+                        title: 'upload上传',
+                        keepAlive: true
+                    }
                 },
                 {
                     // vue-schart组件
                     path: '/charts',
-                    component: () => import(/* webpackChunkName: "chart" */ '../components/page/BaseCharts.vue'),
-                    meta: { title: 'schart图表' }
+                    component: resolve => require(['../components/page/BaseCharts.vue'], resolve),
+                    meta: { 
+                        title: 'Echart图表',
+                        keepAlive: true
+                    }
                 },
                 {
                     // 拖拽列表组件
                     path: '/drag',
-                    component: () => import(/* webpackChunkName: "drag" */ '../components/page/DragList.vue'),
-                    meta: { title: '拖拽列表' }
+                    component: resolve => require(['../components/page/DragList.vue'], resolve),
+                    meta: { 
+                        title: '拖拽列表',
+                        keepAlive: true
+                    }
                 },
                 {
                     // 拖拽Dialog组件
                     path: '/dialog',
-                    component: () => import(/* webpackChunkName: "dragdialog" */ '../components/page/DragDialog.vue'),
-                    meta: { title: '拖拽弹框' }
+                    component: resolve => require(['../components/page/DragDialog.vue'], resolve),
+                    meta: { 
+                        title: '拖拽弹框',
+                        keepAlive: true
+                    }
                 },
                 {
                     // 国际化组件
                     path: '/i18n',
-                    component: () => import(/* webpackChunkName: "i18n" */ '../components/page/I18n.vue'),
-                    meta: { title: '国际化' }
+                    component: resolve => require(['../components/page/I18n.vue'], resolve),
+                    meta: { 
+                        title: '国际化',
+                        keepAlive: true
+                    }
                 },
                 {
                     // 权限页面
                     path: '/permission',
-                    component: () => import(/* webpackChunkName: "permission" */ '../components/page/Permission.vue'),
-                    meta: { title: '权限测试', permission: true }
+                    component: resolve => require(['../components/page/Permission.vue'], resolve),
+                    meta: { 
+                        title: '权限测试',
+                        keepAlive: true
+                    }
                 },
                 {
                     path: '/404',
-                    component: () => import(/* webpackChunkName: "404" */ '../components/page/404.vue'),
+                    component: () => import('../components/page/404.vue'),
                     meta: { title: '404' }
                 },
                 {
                     path: '/403',
-                    component: () => import(/* webpackChunkName: "403" */ '../components/page/403.vue'),
+                    component: () => import('../components/page/403.vue'),
                     meta: { title: '403' }
                 }
             ]
         },
         {
             path: '/login',
-            component: () => import(/* webpackChunkName: "login" */ '../components/page/Login.vue'),
+            component: () => import('../components/page/Login.vue'),
             meta: { title: '登录' }
         },
         {

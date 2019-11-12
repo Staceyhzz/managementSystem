@@ -13,9 +13,9 @@
             <a href="javascript:void(0)">
                 <!-- <Icon @click="collapseChage2" style="margin-top:20px;" color='black' size='28' type="ios-list" /> -->
             </a>
-            <DropdownMenu slot="list">
+            <div slot="list">
                 <v-sidebar></v-sidebar>
-            </DropdownMenu> 
+            </div> 
         </Dropdown>
         <div class="header-right">
             <div class="header-user-con">
@@ -26,14 +26,14 @@
                     </el-tooltip>
                 </div>
                 <!-- 消息中心 -->
-                <!-- <div class="btn-bell">
+                <div class="btn-bell">
                     <el-tooltip effect="dark" :content="msg?`有${msg}条未读消息`:`消息中心`" placement="bottom">
                         <router-link to="/tabs">
-                            <i class="el-icon-bell"></i>
+                            <i style="color: rgb(144, 145, 145);" class="el-icon-bell"></i>
                         </router-link>
                     </el-tooltip>
                     <span class="btn-bell-badge" v-if="msg"></span>
-                </div> -->
+                </div>
                 <!-- 用户头像 -->
                 <div class="user-avator1"><img src="../../assets/img/img.jpg"></div>
                 <!-- 用户名下拉菜单 -->
@@ -42,12 +42,6 @@
                         {{username}} <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <!-- <a href="http://blog.gdfengshuo.com/about/" target="_blank">
-                            <el-dropdown-item>关于作者</el-dropdown-item>
-                        </a>
-                        <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
-                            <el-dropdown-item>项目仓库</el-dropdown-item>
-                        </a> -->
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>

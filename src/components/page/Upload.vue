@@ -1,26 +1,51 @@
 <template>
     <div>
-        <div class="crumbs">
+        <div style="position: absolute;top:-53px;left:60px;" class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item><i class="el-icon-lx-calendar"></i> 表单</el-breadcrumb-item>
                 <el-breadcrumb-item>图片上传</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
-            <div class="content-title">支持拖拽</div>
             <div class="plugins-tips">
                 Element UI自带上传组件。
                 访问地址：<a href="http://element.eleme.io/#/zh-CN/component/upload" target="_blank">Element UI Upload</a>
             </div>
-            <el-upload
-                class="upload-demo"
-                drag
-                action="http://jsonplaceholder.typicode.com/api/posts/"
-                multiple>
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-            </el-upload>
+            <!-- uploadImg上传成功时的方法，后台接口返回的数据在这里 -->
+            <!-- handleRemove删除不用多说了把 -->
+            <!-- limit:限制上传张数 -->
+            <!-- beforeAvatarUpload验证图片上传的各种 -->
+            <el-row :gutter="20">
+                <el-col :span="12">
+                    <h4 style="margin-bottom:20px;">基本上传（限制只能上传图片例子）</h4>
+                    <el-upload
+                        style="width:500px;"
+                        class="upload-demo"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :on-success="uploadImg"
+                        :on-remove="handleRemove"
+                        :file-list="fileList"
+                        list-type="picture">
+                        <el-button size="small" type="primary">点击上传</el-button>
+                        <span style="font-size:12px;color:#666666;margin:0 0 0 20px;" slot="tip" class="el-upload__tip">注：只支持jpg、jpeg、png格式的文件，大小不超过5M</span>
+                    </el-upload>
+                </el-col>
+                <el-col :span="12">
+                    <h4 style="margin-bottom:20px;">高级一点的例子：限制图片的宽高</h4>
+                    <el-upload
+                        style="width:500px;"
+                        class="upload-demo"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :on-success="uploadImg"
+                        :on-remove="handleRemove"
+                        :file-list="fileList"
+                        :beforeUpload="beforeAvatarUpload2"
+                        list-type="picture">
+                        <el-button size="small" type="primary">点击上传</el-button>
+                        <span style="font-size:12px;color:#666666;margin:0 0 0 20px;" slot="tip" class="el-upload__tip">注：只支持jpg、jpeg、png格式的文件，大小不超过5M</span>
+                    </el-upload>
+                </el-col>
+            </el-row>
             <div class="content-title">支持裁剪</div>
             <div class="plugins-tips">
                 vue-cropperjs：一个封装了 cropperjs 的 Vue 组件。
@@ -32,7 +57,6 @@
                     <input class="crop-input" type="file" name="image" accept="image/*" @change="setImage"/>
                 </div>
             </div>
-        
             <el-dialog title="裁剪图片" :visible.sync="dialogVisible" width="30%">
                 <vue-cropper ref='cropper' :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" style="width:100%;height:300px;"></vue-cropper>
                 <span slot="footer" class="dialog-footer">
@@ -50,8 +74,18 @@
         name: 'upload',
         data: function(){
             return {
-                defaultSrc: require('../../assets/img/img.jpg'),
+                // 上传图片headers
+                headers:{
+                    'token': 'XXX'
+                },
+                // 图片向后台传参
+                imgData: {
+                    width: '10',
+                    height: '10',
+                    isCheckSize: false
+                },
                 fileList: [],
+                defaultSrc: require('../../assets/img/img.jpg'),
                 imgSrc: '',
                 cropImg: '',
                 dialogVisible: false,
@@ -61,6 +95,79 @@
             VueCropper
         },
         methods:{
+            // 上传图片逻辑
+            // 删除
+            handleRemove (file, fileList) {
+                this.fileList = fileList;
+            },
+			uploadImg (res) {
+                this.fileList = res.data.url;
+			},
+            beforeAvatarUpload (file) {
+                var self = this;        
+                var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)                
+                const extension = testmsg === 'jpg' ||  testmsg === 'jpeg' ||  testmsg === 'png';
+                const isLt50M = file.size / 1024 / 1024 < 5
+                if(!extension ) {
+                    self.$message({
+                        message: '上传文件只能是jpg、jpeg、png格式！',
+                        type: 'warning'
+                    });
+                    return false;//必须加上return false; 才能阻止
+                }
+                if(!isLt50M) {
+                    self.$message({
+                        message: '上传文件大小不能超过',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                return extension ||  isLt50M
+            },
+            beforeAvatarUpload2 (file) {
+				var self = this;        
+				var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)                
+				const extension = testmsg === 'jpg' ||  testmsg === 'jpeg' ||  testmsg === 'png';
+				const isLt50M = file.size / 1024 / 1024 < 5
+				if(!extension ) {
+                    self.$message({
+                        message: '上传文件只能是jpg、jpeg、png格式！',
+                        type: 'warning'
+                    });
+					return false;//必须加上return false; 才能阻止
+				}
+				if(!isLt50M) {
+                    self.$message({
+                        message: '上传文件大小不能超过',
+                        type: 'warning'
+                    });
+					return false;
+                }
+                // 图片文件大小限制，限制宽高分别为1280px和800px
+                let _this = this;
+                let imgWidth="";
+                let imgHight="";
+                const isSize = new Promise(function (resolve, reject) {
+                let width = 64;
+                let height = 64;
+                let _URL = window.URL || window.webkitURL;
+                let img = new Image();
+                img.onload = function () {
+                    imgWidth = img.width;
+                    imgHight = img.height;
+                    let valid = img.width == width && img.height == height;
+                    valid ? resolve() : reject();
+                }
+                img.src = _URL.createObjectURL(file);
+                }).then(() => {
+                    return file;
+                }, () => {
+                    _this.$message.warning({message: '上传文件的图片大小不合符标准,宽需要为64px，高需要为64px。当前上传图片的宽高分别为：'+imgWidth+'px和'+imgHight+'px', btn: false})
+                    return Promise.reject();
+                });
+                return isSize;
+				return extension ||  isLt50M
+			},
             setImage(e){
                 const file = e.target.files[0];
                 if (!file.type.includes('image/')) {

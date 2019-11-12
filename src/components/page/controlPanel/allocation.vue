@@ -3,36 +3,18 @@
         <div style="position: absolute;top:-53px;left:60px;" class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>控制面板</el-breadcrumb-item>
-                <el-breadcrumb-item>账号管理</el-breadcrumb-item>
+                <el-breadcrumb-item>资源分配组管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
-            <el-button style="margin:0 0 14px 0;" type="primary" @click="adduser(null)">+  新增帐号</el-button>
-            <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline">
-                <el-form-item prop="region">
-                    <el-select style="width:160px;" v-model="formInline.region" placeholder="请选择角色组">
-                        <el-option label="AD妈妈" value="shanghai"></el-option>
-                        <el-option label="DSP平台" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="group">
-                    <el-select style="width:160px;" v-model="formInline.group" placeholder="请选择用户组">
-                        <el-option label="前端工程师" value="shanghai"></el-option>
-                        <el-option label="测试工程师" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="Resources">
-                    <el-select style="width:160px;" v-model="formInline.Resources" placeholder="请选择资源分配组">
-                        <el-option label="权限一" value="shanghai"></el-option>
-                        <el-option label="权限二" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="user">
-                    <el-input style="width:160px;" v-model="formInline.user" placeholder="请输入登陆账号"></el-input>
+            <el-button style="margin:0 0 14px 0;" type="primary" @click="adduser(null)">+  新增资源组</el-button>
+            <el-form :inline="true" :model="formInline" class="demo-form-inline">
+                <el-form-item>
+                    <el-input v-model="formInline.user" placeholder="请输入资源组名称"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">查询</el-button>
-                    <el-button @click="resetForm('formInline')">重置</el-button>
+                    <el-button @click="onSubmit">重置</el-button>
                 </el-form-item>
             </el-form>
             <el-table
@@ -42,21 +24,11 @@
                 :data="data1"
                 border
                 style="width: 100%">
-                <el-table-column prop="id" label="账户id" align="center"></el-table-column>
-                <el-table-column prop="userName" label="登录帐号" align="center"></el-table-column>
-                <el-table-column prop="email" label="联系邮箱" align="center"></el-table-column>
-                <el-table-column prop="userGroup" label="角色组" align="center"></el-table-column>
-                <el-table-column prop="department" label="用户组" align="center"></el-table-column>
-                <el-table-column prop="assignName" label="资源分配组" align="center"></el-table-column>
-                <el-table-column prop="loginTime" label="登录时间" align="center"></el-table-column>
-                <el-table-column prop="userDescription" label="描述" align="center"></el-table-column>
-                <el-table-column prop="dingId" label="钉钉id" align="center"></el-table-column>
-                <el-table-column prop="status" label="状态" align="center">
-                    <template slot-scope="scope">
-                        <span style="color:rgb(0, 153, 51);" v-if="scope.row.status == 1">开启</span>
-                        <span style="color:#CF1F07;" v-else>封禁</span>
-                    </template>
-                </el-table-column>
+                <el-table-column prop="id" label="资源id" align="center"></el-table-column>
+                <el-table-column prop="userName" label="资源组名称" align="center"></el-table-column>
+                <el-table-column prop="email" label="描述" align="center"></el-table-column>
+                <el-table-column prop="userGroup" label="用户查看" align="center"></el-table-column>
+                <el-table-column prop="department" label="创建时间" align="center"></el-table-column>
                 <el-table-column prop="date" label="操作" align="center">
                     <template slot-scope="scope">
                         <el-button style="padding:5px;background:#2d8cf0;color:white;" @click="adduser(scope.row)">编辑</el-button>
@@ -74,44 +46,44 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="dataCount">
             </el-pagination>
-            <my-modal v-model="modal2" :title="modalType === 'add' ? '新增账号':'编辑账号'">
+            <my-modal v-model="modal2" :title="modalType === 'add' ? '新增资源组':'编辑资源组'">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="110px" class="demo-ruleForm">
-                    <el-form-item label="登录名：" prop="name">
+                    <el-form-item label="资源组名称：" prop="name">
                         <el-input v-model="ruleForm.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="姓名：" prop="userName">
+                    <el-form-item label="资源组描述：" prop="userName">
                         <el-input v-model="ruleForm.userName"></el-input>
-                    </el-form-item>
-                    <el-form-item label="手机号码：" prop="telephone">
-                        <el-input v-model="ruleForm.telephone"></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码：" prop="pass">
-                        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="邮箱：" prop="email">
-                        <el-input v-model="ruleForm.email"></el-input>
-                    </el-form-item>
-                    <el-form-item label="角色组：" prop="region">
-                        <el-select v-model="ruleForm.region" placeholder="请选择角色组">
-                            <el-option label="AD妈妈" value="shanghai"></el-option>
-                            <el-option label="DSP平台" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="用户组：" prop="group">
-                        <el-select v-model="ruleForm.group" placeholder="请选择用户组">
-                            <el-option label="前端工程师" value="shanghai"></el-option>
-                            <el-option label="测试工程师" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="资源分配组：" prop="resources">
-                        <el-select v-model="ruleForm.resources" placeholder="请选择资源分配组">
-                            <el-option label="权限一" value="shanghai"></el-option>
-                            <el-option label="权限二" value="beijing"></el-option>
-                        </el-select>
                     </el-form-item>
                     <el-form-item label="描述：" prop="desc">
                         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
                     </el-form-item>
+                    <p style="margin:10px 0 10px 0;">Feeds业务</p>
+                    <div style="max-width:650px;margin:0 0 20px 0;border:1px solid #E5E5E5;">
+                        <h3 style="text-align:center;padding:15px 0;border-bottom:1px solid #E5E5E5;background:#f3f3f3;">业务名称
+                            <el-checkbox style="float:right;margin-right:20px;" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                        </h3>
+                        <el-checkbox-group style="margin:10px;" v-model="checkedCities" @change="handleCheckedCitiesChange">
+                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                        </el-checkbox-group>
+                    </div>
+                    <p style="margin:10px 0 10px 0;">外输业务</p>
+                    <div style="max-width:650px;margin:0 0 20px 0;border:1px solid #E5E5E5;">
+                        <h3 style="text-align:center;padding:15px 0;border-bottom:1px solid #E5E5E5;background:#f3f3f3;">业务名称
+                            <el-checkbox style="float:right;margin-right:20px;" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                        </h3>
+                        <el-checkbox-group style="margin:10px;" v-model="checkedCities" @change="handleCheckedCitiesChange">
+                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                        </el-checkbox-group>
+                    </div>          
+                    <p style="margin:10px 0 10px 0;">普通业务</p> 
+                    <div style="max-width:650px;margin:0 0 20px 0;border:1px solid #E5E5E5;">
+                        <h3 style="text-align:center;padding:15px 0;border-bottom:1px solid #E5E5E5;background:#f3f3f3;">业务名称
+                            <el-checkbox style="float:right;margin-right:20px;" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                        </h3>
+                        <el-checkbox-group style="margin:10px;" v-model="checkedCities" @change="handleCheckedCitiesChange">
+                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                        </el-checkbox-group>
+                    </div>  
                     <el-form-item>
                         <el-button v-if="bianji" type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
                         <el-button v-else type="primary" @click="submitForm('ruleForm')">编辑</el-button>
@@ -124,6 +96,7 @@
 </template>
 
 <script>
+const cityOptions = ['上海', '北京', '广州', '深圳'];
 import MyModal from '../../modal/myModal.vue';
 export default {
     components:{
@@ -131,12 +104,14 @@ export default {
     },
     data(){
         return {
+            checkAll: false,
+            checkedCities: ['上海', '北京'],
+            cities: cityOptions,
+            isIndeterminate: true,
             bianji: true,
             formInline: {
-                region: '',
-                group: '',
-                Resources: '',
-                user: ''
+                user: '',
+                region: ''
             },
             ruleForm: {
                 name: '',
@@ -179,7 +154,7 @@ export default {
             modal2: false,
             loading: true,
             modalType: 'add',
-            dataCount: 1, // 初始化信息总条数
+            dataCount: 0, // 初始化信息总条数
             pageNum: 1, // 页数
             pageSize: 10,
             data1: [
@@ -217,6 +192,22 @@ export default {
                 }
             });
         },
+        sealing () {
+            this.$confirm('确认封禁？')
+            .then(_ => {
+                done();
+            })
+            .catch(_ => {});
+        },
+        handleCheckAllChange(val) {
+            this.checkedCities = val ? cityOptions : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.cities.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        },
         adduser(data) {
             if(data) {
                 this.$refs['ruleForm'].resetFields();
@@ -240,9 +231,6 @@ export default {
         },
         onSubmit() {
             console.log('submit!');
-        },
-        resetForm(formName) {
-            this.$refs[formName].resetFields();
         },
         // 分页
         handleSizeChange(val) {

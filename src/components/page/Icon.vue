@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="crumbs">
+        <div style="position: absolute;top:-53px;left:60px;" class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item><i class="el-icon-lx-emoji"></i> 自定义图标</el-breadcrumb-item>
             </el-breadcrumb>
