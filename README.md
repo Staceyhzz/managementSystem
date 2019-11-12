@@ -14,15 +14,15 @@
 
 ### 登录
 
-![Image text](https://github.com/lin-xin/manage-system/raw/master/screenshots/wms3.png)
+![Image text](https://github.com/Staceyhzz/managementSystem/raw/master/screenshots/wms3.png)
 
 ### 默认皮肤
 
-![Image text](https://github.com/lin-xin/manage-system/raw/master/screenshots/wms1.png)
+![Image text](https://github.com/Staceyhzz/managementSystem/raw/master/screenshots/wms1.png)
 
 ### 浅绿色皮肤
 
-![Image text](https://github.com/lin-xin/manage-system/raw/master/screenshots/wms2.png)
+![Image text](https://github.com/Staceyhzz/managementSystem/raw/master/screenshots/wms2.png)
 
 
 ## 前言
